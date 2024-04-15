@@ -1,4 +1,3 @@
--- Use this script to set up your Planetarium database
 
 -- needed for referential integrity enforcement
 PRAGMA foreign_keys = 1;

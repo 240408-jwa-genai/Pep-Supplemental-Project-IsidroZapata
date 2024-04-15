@@ -13,8 +13,15 @@ public class UserService {
 	}
 
 	public User authenticate(UsernamePasswordAuthentication loginRequestData) {
-		// TODO: implement
-		return null;
+
+		User possibleUser = dao.getUserByUsername(loginRequestData.getUsername());
+		if (loginRequestData.getUsername().equals(possibleUser.getUsername())
+				&& loginRequestData.getPassword().equals(possibleUser.getPassword())) {
+			return possibleUser;
+		}
+		// TODO: Try return NULL, to hit logic = invalid data === null
+		return new User();
+
 	}
 
 	public User register(User registerRequestData) {
@@ -38,7 +45,7 @@ public class UserService {
 					// IF THE USERNAME IS NOT ALREADY EXISTING CREATE A NEW USER
 					UsernamePasswordAuthentication validUserCredentials = new UsernamePasswordAuthentication();
 					validUserCredentials.setUsername(requestUserName);
-					validUserCredentials.setPassword(requestUserName);
+					validUserCredentials.setPassword(registerRequestData.getPassword());
 					// NOTE: return a user object to inform CL the registration processed was
 					// successful
 					return dao.createUser(validUserCredentials);

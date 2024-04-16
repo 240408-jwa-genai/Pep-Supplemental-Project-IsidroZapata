@@ -69,16 +69,15 @@ public class UserDao {
             return null;
         }
     }
-    /*
-     * public static void main(String[] args) {
-     * UserDao dao = new UserDao();
-     * UsernamePasswordAuthentication newCreds = new
-     * UsernamePasswordAuthentication();
-     * newCreds.setPassword("new user");
-     * newCreds.setUsername("new pass");
-     * User returnedUser = dao.createUser(newCreds);
-     * System.out.println(returnedUser);
-     * }
-     */
+
+      public static void main(String[] args) {
+      UserDao dao = new UserDao();
+      UsernamePasswordAuthentication newCreds = new UsernamePasswordAuthentication();
+      newCreds.setPassword("new user");
+      newCreds.setUsername("new pass");
+      User returnedUser = dao.createUser(newCreds);
+      System.out.println(returnedUser);
+      }
+
 
 }

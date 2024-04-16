@@ -69,6 +69,9 @@ public class MainDriver {
 
                     System.out.println("Welcome! You have successfully logged in: " + username);
 
+
+
+
                 } else if (sessionChoice.equals("q")) {
                     System.out.println("Thank you for visiting our Planetarium, Goodbye World!");
                     activeSession = false;

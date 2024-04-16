@@ -19,3 +19,5 @@ create table moons(
 	name varchar(20),
 	myPlanetId int references planets(id)
 );
+
+INSERT INTO users (username, password) VALUES ('test user', 'test password');

@@ -15,10 +15,15 @@ public class UserService {
 	public User authenticate(UsernamePasswordAuthentication loginRequestData) {
 
 		User possibleUser = dao.getUserByUsername(loginRequestData.getUsername());
-		if (loginRequestData.getUsername().equals(possibleUser.getUsername())
-				&& loginRequestData.getPassword().equals(possibleUser.getPassword())) {
-			return possibleUser;
+		if(possibleUser != null){
+			boolean usernamesMatch = loginRequestData.getUsername().equals(possibleUser.getUsername());
+			boolean passwordMatch = loginRequestData.getPassword().equals(possibleUser.getPassword());
+			if(usernamesMatch && passwordMatch)
+			{
+				return possibleUser;
+			}
 		}
+
 		// TODO: Try return NULL, to hit logic = invalid data === null
 		return new User();
 
@@ -32,19 +37,19 @@ public class UserService {
 
 			// currently DAO returns null
 			// TODO: Update this next week when squeel works
-			User databaseDAO = dao.getUserByUsername(registerRequestData.getUsername());
+			User databaseData = dao.getUserByUsername(registerRequestData.getUsername());
 
 			// Using the dao method to grab any account
 
-			if (databaseDAO != null) {
+			if (databaseData != null) {
 				// example of saving the data we are working with in their own vars
-				String daoUserName = databaseDAO.getUsername();
-				String requestUserName = registerRequestData.getUsername();
-				if (!daoUserName.equals(requestUserName)) {
+				String usernameFromDatabase = databaseData.getUsername();
+				String usernameFromRegisterRequest = registerRequestData.getUsername();
+				if (!usernameFromRegisterRequest.equals(usernameFromDatabase)) {
 					// if the data is not the same, then the creds are valid
 					// IF THE USERNAME IS NOT ALREADY EXISTING CREATE A NEW USER
 					UsernamePasswordAuthentication validUserCredentials = new UsernamePasswordAuthentication();
-					validUserCredentials.setUsername(requestUserName);
+					validUserCredentials.setUsername(usernameFromRegisterRequest);
 					validUserCredentials.setPassword(registerRequestData.getPassword());
 					// NOTE: return a user object to inform CL the registration processed was
 					// successful

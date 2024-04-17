@@ -21,3 +21,14 @@ create table moons(
 );
 
 INSERT INTO users (username, password) VALUES ('test user', 'test password');
+
+--DO NOT USE! INSERT INTO planets (name,ownerId) VALUES(1,'test planet', 1);
+
+--DO NOT USE! INSERT INTO planets (name,ownerId) VALUES(1,'test planet2', 2);
+INSERT INTO planets(id,name,ownerId) VALUES(1,'test planet 1',1);
+INSERT INTO planets (id,name,ownerId) VALUES(3,'test planet3',3); -- NOT Ran yet
+SELECT name FROM planets WHERE name = 'test planet';
+SELECT id FROM planets WHERE id = 1;
+
+UPDATE planets SET id = 2 WHERE name = 'test planet2';
+DELETE FROM planets WHERE id = 3;

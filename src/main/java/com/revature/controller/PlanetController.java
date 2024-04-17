@@ -13,6 +13,7 @@ public class PlanetController {
 
 	public void getAllPlanets(int currentUserId) {
 		// TODO: implement
+_$
 	}
 
 	public void getPlanetByName(int currentUserId, String name) {

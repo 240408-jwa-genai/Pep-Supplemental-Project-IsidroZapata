@@ -61,6 +61,5 @@ public class UserService {
 		// can use to
 		// inform the controller layer that the registration process failed
 		return new User();
-
 	}
 }

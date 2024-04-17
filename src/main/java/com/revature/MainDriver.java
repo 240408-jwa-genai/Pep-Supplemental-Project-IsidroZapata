@@ -21,6 +21,9 @@ public class MainDriver {
      * UserController
      * UserService
      */
+    public static int loggedInUserId = 0;
+
+
     public static UserDao userDao = new UserDao();
     public static UserService userService = new UserService(userDao);
     public static UserController userController = new UserController(userService);
@@ -36,7 +39,7 @@ public class MainDriver {
                 System.out.println(
                         "\nHello! Welcome to our Planetarium! Enter 1 to register an account, 2 to log in, or q to quit this session.");
                 String sessionChoice = scanner.nextLine();
-                if (sessionChoice.equals("1")) {
+                if(sessionChoice.equals("1")) {
                     System.out.println("You have chosen to register your account to our Planetarium!");
 
                     System.out.print("Please enter the username for your account: ");
@@ -67,7 +70,7 @@ public class MainDriver {
                     credentials.setPassword(password);
                     userController.authenticate(credentials);
 
-                    System.out.println("Welcome! You have successfully logged in: " + username);
+                    //System.out.println("Welcome! You have successfully logged in: " + username);
 
 
 

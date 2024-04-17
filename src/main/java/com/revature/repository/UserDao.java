@@ -43,6 +43,34 @@ public class UserDao {
         }
         // unreachable code
     }
+    public User getUserbyId(int id)
+    {
+        try(Connection connection = ConnectionUtil.createConnection())
+        {
+            String sql = "SELECT * FROM users WHERE id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1,id);
+            User possibleUser = new User();
+            ResultSet rs = ps.executeQuery();
+            while(rs.next())
+            {
+                int retrievedID = rs.getInt("id");
+                String retrievedUsername = rs.getString("username");
+                String retrievedPassword = rs.getString("password");
+
+                possibleUser.setId(retrievedID);
+                possibleUser.setUsername(retrievedUsername);
+                possibleUser.setPassword(retrievedPassword);
+
+            }
+            return possibleUser;
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public User createUser(UsernamePasswordAuthentication registerRequest) {
         // TODO: implement
@@ -57,8 +85,10 @@ public class UserDao {
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             User newUser = new User();
+
             newUser.setUsername(registerRequest.getUsername());
             newUser.setPassword(registerRequest.getPassword());
+
             while (rs.next()) {
                 newUser.setId(rs.getInt(1));
             }
@@ -70,13 +100,15 @@ public class UserDao {
         }
     }
 
+
       public static void main(String[] args) {
       UserDao dao = new UserDao();
       UsernamePasswordAuthentication newCreds = new UsernamePasswordAuthentication();
-      newCreds.setPassword("new user");
-      newCreds.setUsername("new pass");
+      newCreds.setPassword("new user5");
+      newCreds.setUsername("new pass5");
       User returnedUser = dao.createUser(newCreds);
       System.out.println(returnedUser);
+
       }
 
 

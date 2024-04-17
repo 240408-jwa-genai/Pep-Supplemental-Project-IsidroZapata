@@ -1,9 +1,6 @@
 package com.revature.repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 import com.revature.models.Planet;
@@ -18,7 +15,6 @@ public class PlanetDao {
 		List<Planet> planets = new ArrayList<>();
 		try(Connection connection = ConnectionUtil.createConnection())
 		{
-
 			String sql = "SELECT * FROM PLANETS";
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -33,11 +29,10 @@ public class PlanetDao {
 				planet.setId(retrievedId);
 				planet.setName(retrievedName);
 				planet.setOwnerId(retrievedOwnerId);
+
 				planets.add(planet);
 
 			}
-
-
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -49,13 +44,15 @@ public class PlanetDao {
 	{
 		PlanetDao dao = new PlanetDao();
 		System.out.println(dao.getAllPlanets());
-		Planet newPlanet = new Planet();
-		newPlanet.setId(4);
-		newPlanet.setName("test planet 4");
-		newPlanet.setOwnerId(4);
-		dao.createPlanet(newPlanet);
-		System.out.println(dao.getPlanetByName("test planet2"));
-		//System.out.println(dao.getPlanetById(4));
+//		Planet newPlanet = new Planet();
+//		newPlanet.setId(2);
+//		newPlanet.setName("test planet 2");
+//		newPlanet.setOwnerId(2);
+//		dao.createPlanet(newPlanet);
+		//TODO: Getting NULL ids so planet cannot be found by ID or name Fix
+
+		//System.out.println(dao.getPlanetByName("test planet2"));
+		System.out.println(dao.getPlanetById(1));
 		//System.out.println(dao.deletePlanetById(3));
 		System.out.println(dao.getAllPlanets());
 
@@ -73,8 +70,11 @@ public class PlanetDao {
 			while(rs.next())
 			{
 				int retrievedId = rs.getInt("id");
-				String retrievedPlanet = rs.getString("name");
+				String retrievedPlanetName = rs.getString("name");
 				int retrievedOwnerId = rs.getInt("ownerId");
+				possiblePlanet.setId(retrievedId);
+				possiblePlanet.setName(retrievedPlanetName);
+				possiblePlanet.setId(retrievedOwnerId);
 			}
 			return possiblePlanet;
 		}
@@ -96,8 +96,11 @@ public class PlanetDao {
 			while(rs.next())
 			{
 				int retrievedId = rs.getInt("id");
-				String retrievedPlanet = rs.getString("name");
+				String retrievedPlanetName = rs.getString("name");
 				int retrievedOwnerId = rs.getInt("ownerId");
+				possiblePlanet.setId(retrievedId);
+				possiblePlanet.setName(retrievedPlanetName);
+				possiblePlanet.setId(retrievedOwnerId);
 			}
 			return possiblePlanet;
 		}
@@ -108,19 +111,24 @@ public class PlanetDao {
 		}
 
 	}
-
-	public Planet createPlanet(Planet p) {
+	// TODO: Figure out NULL id value
+	//planet creation is setting ID to NULL same format as User but does fill 2/3 fields correctly
+	// name and ownerId when setting them in this method
+	public Planet createPlanet(Planet planet) {
 		// TODO: implement
 		try(Connection connection = ConnectionUtil.createConnection()){
-			String sql = "INSERT INTO planets(id,name,ownerId) VALUES(?,?,?)";
-			PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-			ps.setString(1,p.getName());
-			ps.setInt(2,p.getOwnerId());
+			String sql = "INSERT INTO planets(name,ownerId) VALUES(?,?)";
+			PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			ps.setString(1,planet.getName());
+			ps.setInt(2,planet.getOwnerId());
+
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			Planet newPlanet = new Planet();
-			newPlanet.setName(p.getName());
-			newPlanet.setOwnerId(p.getOwnerId());
+
+			newPlanet.setName(planet.getName());
+			newPlanet.setOwnerId(planet.getOwnerId());
+
 			while(rs.next()){
 				newPlanet.setId(rs.getInt(1));
 			}

@@ -14,12 +14,14 @@ public class PlanetService {
 	}
 
 	public List<Planet> getAllPlanets() {
-		// TODO Auto-generated method stub
+
 		return dao.getAllPlanets();
 	}
 
 	public Planet getPlanetByName(int ownerId, String planetName) {
 		// TODO Auto-generated method stub
+		// ownerId in planets table references users(id) table
+
 		return null;
 	}
 

@@ -13,30 +13,49 @@ public class PlanetService {
 		this.dao = dao;
 	}
 
-	public List<Planet> getAllPlanets() {
+	public List<Planet> getAllPlanets(int currentUserId) {
 
-		return dao.getAllPlanets();
+		return dao.getAllPlanets(currentUserId);
 	}
 
 	public Planet getPlanetByName(int ownerId, String planetName) {
 		// TODO Auto-generated method stub
 		// ownerId in planets table references users(id) table
+		Planet planet = dao.getPlanetByName(planetName);
 
-		return null;
+		if(planet != null && planet.getOwnerId() == ownerId)
+		{
+			return planet;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	public Planet getPlanetById(int ownerId, int planetId) {
 		// TODO Auto-generated method stub
-		return null;
+		Planet planet = dao.getPlanetById(planetId);
+		if(planet != null && planet.getOwnerId() == ownerId)
+		{
+			return planet;
+		}
+		else {
+			return null;
+		}
 	}
 
 	public Planet createPlanet(int ownerId, Planet planet) {
 		// TODO Auto-generated method stub
-		return null;
+		planet.setOwnerId(ownerId);
+
+		return dao.createPlanet(planet);
 	}
 
 	public boolean deletePlanetById(int planetId) {
 		// TODO Auto-generated method stub
-		return false;
+		return dao.deletePlanetById(planetId);
 	}
+
+
 }

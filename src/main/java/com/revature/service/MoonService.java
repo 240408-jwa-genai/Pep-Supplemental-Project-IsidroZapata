@@ -13,7 +13,7 @@ public class MoonService {
 		this.dao = dao;
 	}
 
-	public List<Moon> getAllMoons() {
+	public List<Moon> getAllMoons(int currentUserId) {
 		// TODO implement
 		return null;
 	}

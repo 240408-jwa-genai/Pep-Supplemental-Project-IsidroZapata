@@ -10,13 +10,14 @@ import javax.xml.transform.Result;
 
 public class PlanetDao {
     
-    public List<Planet> getAllPlanets() {
+    public List<Planet> getAllPlanets(int ownerId) {
 		// TODO: implement
 		List<Planet> planets = new ArrayList<>();
 		try(Connection connection = ConnectionUtil.createConnection())
 		{
-			String sql = "SELECT * FROM PLANETS";
+			String sql = "SELECT * FROM PLANETS WHERE ownerId = ?";
 			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1,ownerId);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
@@ -43,7 +44,7 @@ public class PlanetDao {
 	public static void main(String [] args)
 	{
 		PlanetDao dao = new PlanetDao();
-		System.out.println(dao.getAllPlanets());
+		//System.out.println(dao.getAllPlanets());
 //		Planet newPlanet = new Planet();
 //		newPlanet.setId(2);
 //		newPlanet.setName("test planet 2");
@@ -54,7 +55,7 @@ public class PlanetDao {
 		//System.out.println(dao.getPlanetByName("test planet2"));
 		System.out.println(dao.getPlanetById(1));
 		//System.out.println(dao.deletePlanetById(3));
-		System.out.println(dao.getAllPlanets());
+		//System.out.println(dao.getAllPlanets());
 
 	}
 
@@ -111,6 +112,7 @@ public class PlanetDao {
 		}
 
 	}
+
 	// TODO: Figure out NULL id value
 	//planet creation is setting ID to NULL same format as User but does fill 2/3 fields correctly
 	// name and ownerId when setting them in this method
@@ -158,4 +160,5 @@ public class PlanetDao {
 			return false;
 		}
 	}
+
 }

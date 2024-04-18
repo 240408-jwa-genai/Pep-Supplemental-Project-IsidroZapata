@@ -20,6 +20,15 @@ public class MainDriver {
      * MainDriver
      * UserController
      * UserService
+     * Meeting with Dan notes:
+     * THe Main driver is the "endpoint" the interface of this application
+     * Obvious as it is for the other controllers to control the interactions I am having
+     * With the application that is where I am getting all my information from
+     * Can also call MainDriver.loggedInUserId this id or their current id and
+     * work with the interface like that.
+     *  This may just do what the return generated keys already does
+     *      insert into users (username, password) values (?, ?) returning *
+     *  Should test and find out
      */
     public static int loggedInUserId = 0;
 
@@ -70,7 +79,7 @@ public class MainDriver {
                     credentials.setPassword(password);
                     userController.authenticate(credentials);
 
-                    //System.out.println("Welcome! You have successfully logged in: " + username);
+                    System.out.println("Welcome! You have successfully logged in: " + username);
 
 
 

@@ -44,12 +44,13 @@ public class UserController {
 	}
 
 	public void logout() {
-		// TODO: implement
+		MainDriver.loggedInUserId = 0;
+
 
 	}
 
 	public boolean checkAuthorization(int userId) {
 		// TODO: implement
-		return false;
+		return MainDriver.loggedInUserId == userId;
 	}
 }

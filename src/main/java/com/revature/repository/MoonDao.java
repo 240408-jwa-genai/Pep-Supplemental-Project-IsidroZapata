@@ -14,24 +14,26 @@ import com.revature.utilities.ConnectionUtil;
 
 public class MoonDao {
     
-    public List<Moon> getAllMoons() {
+    public List<Moon> getAllMoons(int myPlanetId) {
 		// TODO: implement
 		List<Moon> moons = new ArrayList<>();
 		try(Connection connection = ConnectionUtil.createConnection())
 		{
-			String sql = "SELECT * FROM moons";
+			String sql = "SELECT * FROM moons WHERE myPlanetId = ?";
 			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1,myPlanetId);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
 				Moon moon = new Moon();
 				int retrievedId = rs.getInt("id");
 				String retrievedName = rs.getString("name");
-				int retrievedMoonId = rs.getInt("myPlanetId");
+				int retrievedMyPlanetId = rs.getInt("myPlanetId");
 
 				moon.setId(retrievedId);
 				moon.setName(retrievedName);
-				moon.setMyPlanetId(retrievedMoonId);
+				moon.setMyPlanetId(retrievedMyPlanetId);
+
 				moons.add(moon);
 			}
 

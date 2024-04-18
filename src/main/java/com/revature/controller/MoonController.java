@@ -13,6 +13,7 @@ public class MoonController {
 
 	public void getAllMoons(int currentUserId) {
 		// TODO: implement
+		moonService.getAllMoons(currentUserId);
 	}
 
 	public void getMoonByName(int currentUserId, String name) {

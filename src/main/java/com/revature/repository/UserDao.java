@@ -81,17 +81,20 @@ public class UserDao {
             ps.setString(1, registerRequest.getUsername());
             ps.setString(2, registerRequest.getPassword());
             // alter request so executeupdate no exec query
-
             ps.executeUpdate();
+
             ResultSet rs = ps.getGeneratedKeys();
             User newUser = new User();
 
-            newUser.setUsername(registerRequest.getUsername());
-            newUser.setPassword(registerRequest.getPassword());
+
 
             while (rs.next()) {
                 newUser.setId(rs.getInt(1));
+
             }
+
+            newUser.setUsername(registerRequest.getUsername());
+            newUser.setPassword(registerRequest.getPassword());
             return newUser;
 
         } catch (SQLException e) {
@@ -104,8 +107,8 @@ public class UserDao {
       public static void main(String[] args) {
       UserDao dao = new UserDao();
       UsernamePasswordAuthentication newCreds = new UsernamePasswordAuthentication();
-      newCreds.setPassword("new user5");
-      newCreds.setUsername("new pass5");
+      newCreds.setPassword("new user3466");
+      newCreds.setUsername("new pass3466");
       User returnedUser = dao.createUser(newCreds);
       System.out.println(returnedUser);
 

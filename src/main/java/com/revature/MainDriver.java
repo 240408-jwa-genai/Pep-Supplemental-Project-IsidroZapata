@@ -63,9 +63,10 @@ public class MainDriver {
                     User potentialUser = new User();
                     potentialUser.setUsername(potentialUsername);
                     potentialUser.setPassword(potentialPassword);
-
+                    System.out.println(potentialUser.getId());
                     // pass the data into the service layer for validation
                     userService.register(potentialUser);
+                    System.out.println(potentialUser.getId());
                 } else if (sessionChoice.equals("2")) {
                     System.out.println("\nYou have chosen to log in!");
                     System.out.println("Please enter your username: ");
@@ -79,7 +80,7 @@ public class MainDriver {
                     credentials.setPassword(password);
                     userController.authenticate(credentials);
 
-                    System.out.println("Welcome! You have successfully logged in: " + username);
+                    //System.out.println("Welcome! You have successfully logged in: " + username);
 
 
 

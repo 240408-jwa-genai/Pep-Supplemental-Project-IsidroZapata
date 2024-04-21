@@ -10,13 +10,14 @@ public class UserController {
 	private UserService userService;
 
 	public UserController(UserService userService) {
+
 		this.userService = userService;
 	}
 
 	public void authenticate(UsernamePasswordAuthentication loginRequestData) {
 		// TODO: implement
 		User possibleUser = userService.authenticate(loginRequestData);
-		if(possibleUser.getId()!= 0){
+		if(possibleUser != null){
 			MainDriver.loggedInUserId = possibleUser.getId();
 			System.out.println(String.format("Hello %s! Welcome to the Planetarium",possibleUser.getUsername()));
 		}
@@ -26,19 +27,12 @@ public class UserController {
 	}
 
 	public void register(User registerRequestData) {
-		/*
-		 * Because the controller is only responsible for getting user input and
-		 * returning messages/data
-		 * to the user, we will simply pass the User data into the service layer, and
-		 * then depending on
-		 * the response back from the Service layer, tell the user their request was
-		 * successful or not
-		 */
 
 		User userResponse = userService.register(registerRequestData);
-		if (userResponse.getId() != 0) {
+		if (userResponse != null) {
 			System.out.println("Registration successful! Enjoy using the Planetarium!");
 		} else {
+			// TODO: Not getting these successful messages user id not 1 or 0?
 			System.out.println("Registration failed: please double check your username and password and try again.");
 		}
 	}

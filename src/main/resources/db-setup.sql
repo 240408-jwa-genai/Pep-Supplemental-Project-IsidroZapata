@@ -3,7 +3,7 @@
 PRAGMA foreign_keys = 1;
 
 create table users(
-	id serial primary key,
+	id integer primary KEY autoincrement,
 	username varchar(20) unique,
 	password varchar(20)
 );
@@ -19,7 +19,7 @@ create table moons(
 	name varchar(20),
 	myPlanetId int references planets(id)
 );
-
+DROP TABLE users;
 INSERT INTO users (username, password) VALUES ('test user', 'test password');
 
 --DO NOT USE! INSERT INTO planets (name,ownerId) VALUES(1,'test planet', 1);

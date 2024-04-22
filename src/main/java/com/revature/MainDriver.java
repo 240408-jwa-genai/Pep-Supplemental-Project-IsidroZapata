@@ -1,12 +1,22 @@
 package com.revature;
 
+import java.lang.ref.SoftReference;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
+import com.revature.controller.MoonController;
 import com.revature.controller.UserController;
+import com.revature.models.Moon;
+import com.revature.models.Planet;
 import com.revature.models.User;
 import com.revature.models.UsernamePasswordAuthentication;
+import com.revature.repository.MoonDao;
+import com.revature.repository.PlanetDao;
 import com.revature.repository.UserDao;
+import com.revature.service.MoonService;
 import com.revature.service.UserService;
+import com.revature.controller.PlanetController;
+import com.revature.service.PlanetService;
 import com.revature.utilities.ConnectionUtil;
 
 public class MainDriver {
@@ -34,8 +44,16 @@ public class MainDriver {
 
 
     public static UserDao userDao = new UserDao();
+    public static PlanetDao planetDao = new PlanetDao();
+    public static MoonDao moonDao = new MoonDao();
+
     public static UserService userService = new UserService(userDao);
+    public static PlanetService planetService = new PlanetService(planetDao);
+    public static MoonService moonService = new MoonService(moonDao, planetDao);
+
     public static UserController userController = new UserController(userService);
+    public static PlanetController planetController = new PlanetController(planetService);
+    public static MoonController moonController = new MoonController(moonService);
 
     public static void main(String[] args) {
         // TODO: implement main method to initialize layers and run the application
@@ -80,9 +98,23 @@ public class MainDriver {
                     credentials.setPassword(password);
                     userController.authenticate(credentials);
 
-                    //System.out.println("Welcome! You have successfully logged in: " + username);
-
-
+                    System.out.println("Welcome! You have successfully logged in: " + username);
+                    System.out.println("Here is your list of possible request!");
+                    System.out.println("1 - add a new Planet to your Planetarium ");
+                    System.out.println("2 - remove a Planet to your Planetarium ");
+                    System.out.println("3 - add a new Moon to a Planet in your Planetarium ");
+                    System.out.println("4 - remove a Moon to a Planet in your Planetarium ");
+                    System.out.println("5 - to view all your Planets and Moons in your Planetarium");
+                    String userChoice = scanner.nextLine();
+                    int loggedInUserId = MainDriver.loggedInUserId;
+                    if(userChoice.equals("1"))
+                    {
+                        System.out.println("Please enter the name of your Planet ");
+                        Planet possiblePlanet = new Planet();
+                        possiblePlanet.setName(scanner.nextLine());
+                        planetController.createPlanet(loggedInUserId,possiblePlanet);
+                        System.out.println("Planet created successfully");
+                    }
 
 
                 } else if (sessionChoice.equals("q")) {

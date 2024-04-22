@@ -50,6 +50,7 @@ public class UserService {
 			}
 			return newUser;
 		}
+		System.out.println();
 
 		return null;
 	}

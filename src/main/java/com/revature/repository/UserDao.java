@@ -107,9 +107,12 @@ public class UserDao {
       public static void main(String[] args) {
       UserDao dao = new UserDao();
       UsernamePasswordAuthentication newCreds = new UsernamePasswordAuthentication();
-      newCreds.setPassword("new user3466");
-      newCreds.setUsername("new pass3466");
+      newCreds.setPassword("new user4");
+      newCreds.setUsername("new pass4");
       User returnedUser = dao.createUser(newCreds);
+      System.out.println(dao.getUserByUsername(returnedUser.getUsername()));
+      System.out.println(dao.getUserbyId(returnedUser.getId()));
+
       System.out.println(returnedUser);
 
       }

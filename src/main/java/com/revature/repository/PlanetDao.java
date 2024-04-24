@@ -63,7 +63,7 @@ public class PlanetDao {
 		// TODO: implement
 		try(Connection connection = ConnectionUtil.createConnection()){
 			//test on DBeaver with ? = test
-			String sql = "SELECT name from planets WHERE name = ?";
+			String sql = "SELECT * from planets WHERE name = ?";
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setString(1, planetName);
 			ResultSet rs = ps.executeQuery();
@@ -89,7 +89,7 @@ public class PlanetDao {
 
 	public Planet getPlanetById(int planetId) {
 		try(Connection connection = ConnectionUtil.createConnection()){
-			String sql = "SELECT id from planets WHERE id = ?";
+			String sql = "SELECT * from planets WHERE id = ?";
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, planetId);
 			ResultSet rs = ps.executeQuery();

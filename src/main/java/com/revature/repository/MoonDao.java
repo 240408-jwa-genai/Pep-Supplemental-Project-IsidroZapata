@@ -109,28 +109,27 @@ public class MoonDao {
 	public Moon createMoon(Moon moon) {
 		try(Connection connection = ConnectionUtil.createConnection())
 		{
-			String sql = "INSERT INTO moon(name, myPlanetId) VALUES(?,?)";
+			String sql = "INSERT INTO moons(name, myPlanetId) VALUES(?,?)";
 			PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1,moon.getName());
 			ps.setInt(2, moon.getMyPlanetId());
 
-
-			ResultSet rs = ps.getGeneratedKeys();
-			Moon newMoon = new Moon();
-
-			newMoon.setName(moon.getName());
-			newMoon.setMyPlanetId(moon.getMyPlanetId());
-
-			while(rs.next()){
-				newMoon.setId(rs.getInt(1));
+			int rowsInserted = ps.executeUpdate();
+			if (rowsInserted > 0) {
+				ResultSet rs = ps.getGeneratedKeys();
+				if (rs.next()) {
+					int moonId = rs.getInt(1);
+					moon.setId(moonId);
+					return moon;
+				}
 			}
-			return newMoon;
 		}
 		catch(SQLException e)
 		{
 			e.printStackTrace();
 			return null;
 		}
+		return null;
 	}
 
 	public boolean deleteMoonById(int moonId) {
@@ -154,8 +153,9 @@ public class MoonDao {
 		List<Moon> moons = new ArrayList<>();
 		try(Connection connection = ConnectionUtil.createConnection())
 		{
-			String sql = "SELECT * FROM moons, planets Where s.myPlanetid = planets.id";
+			String sql = "SELECT * FROM moons WHERE myPlanetId = ?";
 			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1,planetId);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{

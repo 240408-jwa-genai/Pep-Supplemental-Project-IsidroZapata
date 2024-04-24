@@ -4,6 +4,8 @@ import com.revature.models.Planet;
 import com.revature.service.PlanetService;
 import com.revature.service.UserService;
 
+import java.util.List;
+
 public class PlanetController {
 	
 	private PlanetService planetService;
@@ -16,7 +18,18 @@ public class PlanetController {
 	public void getAllPlanets(int currentUserId) {
 		// TODO: implement
 
-		planetService.getAllPlanets(currentUserId);
+		List<Planet> listofPlanets = planetService.getAllPlanets(currentUserId);
+		if(listofPlanets.isEmpty())
+		{
+			System.out.println("No plants were found in your planetarium");
+		}
+		else{
+			System.out.println("The planets in your Planetarium:");
+			for(Planet planet: listofPlanets)
+			{
+				System.out.println(planet);
+			}
+		}
 	}
 
 	public void getPlanetByName(int currentUserId, String name) {

@@ -83,7 +83,7 @@ public class MainDriver {
                     potentialUser.setPassword(potentialPassword);
                     System.out.println(potentialUser.getId());
                     // pass the data into the service layer for validation
-                    userService.register(potentialUser);
+                    userController.register(potentialUser);
                     System.out.println(potentialUser.getId());
                 } else if (sessionChoice.equals("2")) {
                     System.out.println("\nYou have chosen to log in!");
@@ -115,6 +115,44 @@ public class MainDriver {
                         planetController.createPlanet(loggedInUserId,possiblePlanet);
                         System.out.println("Planet created successfully");
                     }
+                    if(userChoice.equals("2"))
+                    {
+                        System.out.println("Here is a list of all your planets:");
+                        planetController.getAllPlanets(loggedInUserId);
+                        System.out.println("Please enter the ID of the planet you want to delete:");
+                        int deathStartBeamPlanetId = Integer.parseInt(scanner.nextLine());
+                        planetController.deletePlanet(loggedInUserId,deathStartBeamPlanetId);
+                    }
+                    if(userChoice.equals("3"))
+                    {
+                        System.out.println("Here is a list of all your planets:");
+                        planetController.getAllPlanets(loggedInUserId);
+                        System.out.println("Please enter the ID of the Planet to which you want to add a Moon:");
+                        int planetId = Integer.parseInt(scanner.nextLine());
+                        System.out.println("Now please enter the name of the Moon you want to create for this planet: ");
+                        String possibleMoonName = scanner.nextLine();
+                        Moon newMoon = new Moon();
+                        newMoon.setName(possibleMoonName);
+                        newMoon.setMyPlanetId(planetId);
+                        moonController.createMoon(planetId,newMoon);
+
+
+                    }
+                    if(userChoice.equals("4"))
+                    {
+                        System.out.println("Here is a list of all your moons: ");
+                        moonController.getAllMoons(loggedInUserId);
+                        System.out.println("Please enter the ID of the moon you want to delete:");
+                        int deathStarBeamMoonId = Integer.parseInt(scanner.nextLine());
+                        moonController.deleteMoon(deathStarBeamMoonId);
+
+                    }
+                    if(userChoice.equals("5"))
+                    {
+                        planetController.getAllPlanets(loggedInUserId);
+                        moonController.getAllMoons(loggedInUserId);
+                    }
+
 
 
                 } else if (sessionChoice.equals("q")) {

@@ -29,10 +29,9 @@ public class UserController {
 	public void register(User registerRequestData) {
 
 		User userResponse = userService.register(registerRequestData);
-		if (userResponse != null) {
+		if (userResponse.getId() != 0){
 			System.out.println("Registration successful! Enjoy using the Planetarium!");
 		} else {
-			// TODO: Not getting these successful messages user id not 1 or 0?
 			System.out.println("Registration failed: please double check your username and password and try again.");
 		}
 	}

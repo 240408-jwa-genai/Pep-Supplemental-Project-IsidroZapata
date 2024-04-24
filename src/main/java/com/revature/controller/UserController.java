@@ -23,6 +23,7 @@ public class UserController {
 		}
 		else{
 			System.out.println("Username/Password combo invalid, please try again!");
+
 		}
 	}
 

@@ -62,105 +62,121 @@ public class MainDriver {
         // done with it
         try (Scanner scanner = new Scanner(System.in)) {
             boolean activeSession = true;
+            boolean loggedIn = false;
             while (activeSession) {
-                System.out.println(
-                        "\nHello! Welcome to our Planetarium! Enter 1 to register an account, 2 to log in, or q to quit this session.");
-                String sessionChoice = scanner.nextLine();
-                if(sessionChoice.equals("1")) {
-                    System.out.println("You have chosen to register your account to our Planetarium!");
+                if (!loggedIn) {
+                    System.out.println(
+                            "\nHello! Welcome to our Planetarium! Enter 1 to register an account, 2 to log in, or q to quit this session.");
+                    String sessionChoice = scanner.nextLine();
+                    switch (sessionChoice) {
+                        case "1":
+                            System.out.println("You have chosen to register your account to our Planetarium!");
+                            System.out.print("Please enter the username for your account: ");
+                            String potentialUsername = scanner.nextLine();
+                            System.out.print("Please enter the password for your account: ");
+                            String potentialPassword = scanner.nextLine();
+                            User potentialUser = new User();
+                            potentialUser.setUsername(potentialUsername);
+                            potentialUser.setPassword(potentialPassword);
+                            System.out.println(potentialUser.getId());
 
-                    System.out.print("Please enter the username for your account: ");
-                    String potentialUsername = scanner.nextLine();
+                            userController.register(potentialUser);
+                            System.out.println(potentialUser.getId());
+                            break;
+                        case "2":
+                            System.out.println("\nYou have chosen to log in!");
+                            System.out.println("Please enter your username: ");
+                            String username = scanner.nextLine();
 
-                    System.out.print("Please enter the password for your account: ");
-                    String potentialPassword = scanner.nextLine();
-                    // Create a User Object and provide it with the username and password
-                    // keep in mind the id wil be set by the DB
-                    // (Future note sql - auto increment remember to ignore 1st param)
+                            System.out.println("Please enter your password: ");
+                            String password = scanner.nextLine();
 
-                    User potentialUser = new User();
-                    potentialUser.setUsername(potentialUsername);
-                    potentialUser.setPassword(potentialPassword);
-                    System.out.println(potentialUser.getId());
-                    // pass the data into the service layer for validation
-                    userController.register(potentialUser);
-                    System.out.println(potentialUser.getId());
-                } else if (sessionChoice.equals("2")) {
-                    System.out.println("\nYou have chosen to log in!");
-                    System.out.println("Please enter your username: ");
-                    String username = scanner.nextLine();
-
-                    System.out.println("Please enter your password: ");
-                    String password = scanner.nextLine();
-
-                    UsernamePasswordAuthentication credentials = new UsernamePasswordAuthentication();
-                    credentials.setUsername(username);
-                    credentials.setPassword(password);
-                    userController.authenticate(credentials);
-
-                    System.out.println("Welcome! You have successfully logged in: " + username);
+                            UsernamePasswordAuthentication credentials = new UsernamePasswordAuthentication();
+                            credentials.setUsername(username);
+                            credentials.setPassword(password);
+                            userController.authenticate(credentials);
+                            loggedIn = true;
+                            break;
+                        case "q":
+                            System.out.println("Thank you for visiting our Planetarium, Goodbye World!");
+                            activeSession = false;
+                            break;
+                        default:
+                            System.out
+                                    .println("This is not a valid option, please choose from one of the options printed below");
+                            break;
+                    }
+                } else {
+                    if(loggedInUserId == 0)
+                    {
+                        System.out.println("You are not logged in. Please log in to gain access to the Planetarium");
+                        loggedIn=false;
+                        continue;
+                    }
                     System.out.println("Here is your list of possible request!");
                     System.out.println("1 - add a new Planet to your Planetarium ");
                     System.out.println("2 - remove a Planet to your Planetarium ");
                     System.out.println("3 - add a new Moon to a Planet in your Planetarium ");
                     System.out.println("4 - remove a Moon to a Planet in your Planetarium ");
                     System.out.println("5 - to view all your Planets and Moons in your Planetarium");
+                    System.out.println("q - to logout");
                     String userChoice = scanner.nextLine();
                     int loggedInUserId = MainDriver.loggedInUserId;
-                    if(userChoice.equals("1"))
-                    {
-                        System.out.println("Please enter the name of your Planet ");
-                        Planet possiblePlanet = new Planet();
-                        possiblePlanet.setName(scanner.nextLine());
-                        planetController.createPlanet(loggedInUserId,possiblePlanet);
-                        System.out.println("Planet created successfully");
+                    switch (userChoice) {
+                        case "1":
+                            System.out.println("Please enter the name of your Planet ");
+                            Planet possiblePlanet = new Planet();
+                            possiblePlanet.setName(scanner.nextLine());
+                            if (possiblePlanet.getName().length() <= 30) {
+                                planetController.createPlanet(loggedInUserId, possiblePlanet);
+                                System.out.println("Planet created successfully");
+                            } else {
+                                System.out.println("Plant name exceeds 30 characters");
+                            }
+                            break;
+                        case "2":
+                            System.out.println("Here is a list of all your planets:");
+                            planetController.getAllPlanets(loggedInUserId);
+                            System.out.println("Please enter the ID of the planet you want to delete:");
+                            int deathStartBeamPlanetId = Integer.parseInt(scanner.nextLine());
+                            planetController.deletePlanet(loggedInUserId, deathStartBeamPlanetId);
+                            break;
+                        case "3":
+                            System.out.println("Here is a list of all your planets:");
+                            planetController.getAllPlanets(loggedInUserId);
+                            System.out.println("Please enter the ID of the Planet to which you want to add a Moon:");
+                            int planetId = Integer.parseInt(scanner.nextLine());
+                            System.out.println("Now please enter the name of the Moon you want to create for this planet: ");
+                            String possibleMoonName = scanner.nextLine();
+                            if (possibleMoonName.length() <= 30) {
+                                Moon newMoon = new Moon();
+                                newMoon.setName(possibleMoonName);
+                                newMoon.setMyPlanetId(planetId);
+                                moonController.createMoon(planetId, newMoon);
+                            } else {
+                                System.out.println("Moon name exceeds 30 characters. Please try again!");
+                            }
+                            break;
+                        case "4":
+                            System.out.println("Here is a list of all your moons: ");
+                            moonController.getAllMoons(loggedInUserId);
+                            System.out.println("Please enter the ID of the moon you want to delete:");
+                            int deathStarBeamMoonId = Integer.parseInt(scanner.nextLine());
+                            moonController.deleteMoon(deathStarBeamMoonId);
+                            break;
+                        case "5":
+                            planetController.getAllPlanets(loggedInUserId);
+                            moonController.getAllMoons(loggedInUserId);
+                            break;
+                        case "q":
+                            loggedIn = false;
+                            loggedInUserId = 0;
+                            //activeSession = false;
+                            break;
+                        default:
+                            System.out.println("Invalid option. Please try again." + loggedInUserId);
                     }
-                    if(userChoice.equals("2"))
-                    {
-                        System.out.println("Here is a list of all your planets:");
-                        planetController.getAllPlanets(loggedInUserId);
-                        System.out.println("Please enter the ID of the planet you want to delete:");
-                        int deathStartBeamPlanetId = Integer.parseInt(scanner.nextLine());
-                        planetController.deletePlanet(loggedInUserId,deathStartBeamPlanetId);
-                    }
-                    if(userChoice.equals("3"))
-                    {
-                        System.out.println("Here is a list of all your planets:");
-                        planetController.getAllPlanets(loggedInUserId);
-                        System.out.println("Please enter the ID of the Planet to which you want to add a Moon:");
-                        int planetId = Integer.parseInt(scanner.nextLine());
-                        System.out.println("Now please enter the name of the Moon you want to create for this planet: ");
-                        String possibleMoonName = scanner.nextLine();
-                        Moon newMoon = new Moon();
-                        newMoon.setName(possibleMoonName);
-                        newMoon.setMyPlanetId(planetId);
-                        moonController.createMoon(planetId,newMoon);
 
-
-                    }
-                    if(userChoice.equals("4"))
-                    {
-                        System.out.println("Here is a list of all your moons: ");
-                        moonController.getAllMoons(loggedInUserId);
-                        System.out.println("Please enter the ID of the moon you want to delete:");
-                        int deathStarBeamMoonId = Integer.parseInt(scanner.nextLine());
-                        moonController.deleteMoon(deathStarBeamMoonId);
-
-                    }
-                    if(userChoice.equals("5"))
-                    {
-                        planetController.getAllPlanets(loggedInUserId);
-                        moonController.getAllMoons(loggedInUserId);
-                    }
-
-
-
-                } else if (sessionChoice.equals("q")) {
-                    System.out.println("Thank you for visiting our Planetarium, Goodbye World!");
-                    activeSession = false;
-                } else {
-                    System.out
-                            .println("This is not a valid option, please choose from one of the options printed below");
                 }
             }
         }

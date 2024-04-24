@@ -10,13 +10,13 @@ create table users(
 
 create table planets(
 	id integer primary KEY,
-	name varchar(20),
+	name varchar(20) unique,
 	ownerId int references users(id) ON DELETE CASCADE
 );
 
 create table moons(
 	id integer primary key,
-	name varchar(20),
+	name varchar(20) unique,
 	myPlanetId int references planets(id) ON DELETE CASCADE
 );
 DROP TABLE users;

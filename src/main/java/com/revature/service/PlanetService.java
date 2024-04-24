@@ -47,6 +47,7 @@ public class PlanetService {
 
 	public Planet createPlanet(int ownerId, Planet planet) {
 		// TODO Auto-generated method stub
+
 		planet.setOwnerId(ownerId);
 
 		return dao.createPlanet(planet);
